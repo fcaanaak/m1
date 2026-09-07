@@ -16,7 +16,7 @@
 
 | **Interface**                 | **Describe Group Location, No Mocks**                | **Describe Group Location, With Mocks**            | **Mocked Components**              |
 | ----------------------------- | ---------------------------------------------------- | -------------------------------------------------- | ---------------------------------- |
-| **POST /user/login**          | [`tests/unmocked/authenticationLogin.test.js#L1`](#) | [`tests/mocked/authenticationLogin.test.js#L1`](#) | Google Authentication API, User DB |
+| **POST /user/login**          | [`tests/no-mock/authenticationLogin.test.js#L1`](#) | [`tests/mock/authenticationLogin.test.js#L1`](#) | Google Authentication API, User DB |
 | **POST /study-groups/create** | ...                                                  | ...                                                | Study Group DB                     |
 | ...                           | ...                                                  | ...                                                | ...                                |
 | ...                           | ...                                                  | ...                                                | ...                                |
@@ -50,14 +50,14 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
 ---
 
-## 3. Back-end Test Specification: Tests of Non-Functional Requirements
+## 3. Tests of Non-Functional Requirements
 
 ### 3.1. Test Locations in Git
 
 | **Non-Functional Requirement**  | **Location in Git**                              |
 | ------------------------------- | ------------------------------------------------ |
-| **Performance (Response Time)** | [`tests/nonfunctional/response_time.test.js`](#) |
-| **Chat Data Security**          | [`tests/nonfunctional/chat_security.test.js`](#) |
+| **Performance (Response Time)** | [`backend/tests/nfr/response_time.test.js`](#) |
+| **Chat Data Security**          | [`backend/tests/nfr/chat_security.test.js`](#) |
 
 ### 3.2. Test Verification and Logs
 
