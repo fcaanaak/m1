@@ -2,6 +2,7 @@ import express, { type Express } from 'express';
 
 import IPService from "./services/ipService";
 import NameService from "./services/nameService";
+import TimeService from "./services/timeService";
 
 // Things completed
 // 1. Server IP
@@ -17,6 +18,7 @@ export function createApp(): Express {
 
   const ipService = new IPService();
   const nameService = new NameService();
+  const timeService = new TimeService()
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
@@ -29,6 +31,10 @@ export function createApp(): Express {
 
   app.get('/name', (_req, res) => {
     res.json({name: nameService.getFullName()})
+  })
+
+  app.get('/time', (_req, res) => {
+    res.json({time:timeService.getTime()})
   })
 
   app.use((_req, res) => {
