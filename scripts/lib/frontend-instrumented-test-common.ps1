@@ -4,7 +4,7 @@ Shared helpers for frontend instrumented test runners (E2E + NFR).
 Dot-source after setting $Root and $FrontendDir.
 
 Expected layout:
-  frontend\app\src\androidTest\...\{e2e,nfr}\
+  frontend\app\src\test\...\{e2e,nfr}\
   frontend\app\build.gradle[.kts]
 #>
 
@@ -51,9 +51,9 @@ function Pick-GradleBuildFile($dir) {
     Die "Cannot find build.gradle.kts or build.gradle in $dir."
 }
 
-function Resolve-AndroidTestRoot {
-    $script:AndroidTestRoot = Join-Path $FrontendDir 'app\src\androidTest'
-    if (-not (Test-Path $script:AndroidTestRoot)) { Die "Cannot find $($script:AndroidTestRoot)." }
+function Resolve-TestRoot {
+    $script:TestRoot = Join-Path $FrontendDir 'app\src\test'
+    if (-not (Test-Path $script:TestRoot)) { Die "Cannot find $($script:TestRoot)." }
     $script:GradleTask = ':app:connectedDebugAndroidTest'
     $script:AppBuild = Pick-GradleBuildFile (Join-Path $FrontendDir 'app')
 }
@@ -83,7 +83,7 @@ function Get-KotlinTestClass($file) {
 
 function Discover-TestFiles($subdir) {
     $script:TestFiles = @(
-        Get-ChildItem -Path $script:AndroidTestRoot -Recurse -File -Filter '*.kt' -ErrorAction SilentlyContinue |
+        Get-ChildItem -Path $script:TestRoot -Recurse -File -Filter '*.kt' -ErrorAction SilentlyContinue |
             Where-Object { $_.FullName -match "[\\/]$([regex]::Escape($subdir))[\\/]" } |
             Sort-Object FullName |
             ForEach-Object { $_.FullName }
@@ -117,11 +117,11 @@ function Run-InstrumentedTests($suite) {
         default { Die "Unknown suite '$suite' (expected e2e or nfr)." }
     }
 
-    Resolve-AndroidTestRoot
+    Resolve-TestRoot
     Discover-TestFiles $subdir
 
     if ($script:TestFiles.Count -eq 0) {
-        Warn "Skipping frontend ${label} tests: no *.kt files in app\src\androidTest\...\${subdir}\."
+        Warn "Skipping frontend ${label} tests: no *.kt files in app\src\test\...\${subdir}\."
         exit 0
     }
 

@@ -4,7 +4,7 @@
 # Source after setting ROOT and FRONTEND_DIR.
 #
 # Expected layout:
-#   frontend/app/src/androidTest/.../{e2e,nfr}/
+#   frontend/app/src/test/.../{e2e,nfr}/
 #   frontend/app/build.gradle[.kts]
 
 : "${ROOT:?ROOT must be set}"
@@ -34,9 +34,9 @@ pick_gradle_build_file() {
   fi
 }
 
-resolve_android_test_root() {
-  ANDROID_TEST_ROOT="$FRONTEND_DIR/app/src/androidTest"
-  [[ -d "$ANDROID_TEST_ROOT" ]] || die "Cannot find $ANDROID_TEST_ROOT."
+resolve_test_root() {
+  TEST_ROOT="$FRONTEND_DIR/app/src/test"
+  [[ -d "$TEST_ROOT" ]] || die "Cannot find $TEST_ROOT."
   GRADLE_TASK=":app:connectedDebugAndroidTest"
   APP_BUILD="$(pick_gradle_build_file "$FRONTEND_DIR/app")"
 }
@@ -61,7 +61,7 @@ discover_test_files() {
   TEST_FILES=()
   while IFS= read -r file; do
     [[ -n "$file" ]] && TEST_FILES+=("$file")
-  done < <(find "$ANDROID_TEST_ROOT" -path "*/${subdir}/*" -name '*.kt' 2>/dev/null | sort)
+  done < <(find "$TEST_ROOT" -path "*/${subdir}/*" -name '*.kt' 2>/dev/null | sort)
 }
 
 ensure_backend() {
@@ -94,11 +94,11 @@ run_instrumented_tests() {
     *) die "Unknown suite '$suite' (expected e2e or nfr)." ;;
   esac
 
-  resolve_android_test_root
+  resolve_test_root
   discover_test_files "$subdir"
 
   if ((${#TEST_FILES[@]} == 0)); then
-    warn "Skipping frontend ${label} tests: no *.kt files in app/src/androidTest/.../${subdir}/."
+    warn "Skipping frontend ${label} tests: no *.kt files in app/src/test/.../${subdir}/."
     exit 0
   fi
 
