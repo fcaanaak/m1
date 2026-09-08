@@ -2,11 +2,12 @@ class TimeService {
 
     private formatNumberWithSign(num:number): string {
 
-        num = Math.abs(num);
-        let formattedNumber = num.toString();
+        const posNum = Math.abs(num);
 
-        if (this.isSingleDigit(num)){
-            formattedNumber = this.formatSingleDigit(num);
+        let formattedNumber = posNum.toString();
+
+        if (this.isSingleDigit(posNum)){
+            formattedNumber = this.formatSingleDigit(posNum);
         }
 
         if (num > 0) {
