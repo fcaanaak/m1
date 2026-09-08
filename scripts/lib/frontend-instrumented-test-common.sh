@@ -57,11 +57,11 @@ kotlin_test_class() {
 }
 
 discover_test_files() {
-  local subdir="$1" suffix="$2"
+  local subdir="$1"
   TEST_FILES=()
   while IFS= read -r file; do
     [[ -n "$file" ]] && TEST_FILES+=("$file")
-  done < <(find "$ANDROID_TEST_ROOT" -path "*/${subdir}/*" -name "*${suffix}.kt" 2>/dev/null | sort)
+  done < <(find "$ANDROID_TEST_ROOT" -path "*/${subdir}/*" -name '*.kt' 2>/dev/null | sort)
 }
 
 ensure_backend() {
@@ -87,18 +87,18 @@ wait_for_app_sign_in() {
 
 run_instrumented_tests() {
   local suite="$1"
-  local subdir suffix label
+  local subdir label
   case "$suite" in
-    e2e) subdir=e2e; suffix=E2ETest; label=E2E ;;
-    nfr) subdir=nfr; suffix=NFRTest; label=NFR ;;
+    e2e) subdir=e2e; label=E2E ;;
+    nfr) subdir=nfr; label=NFR ;;
     *) die "Unknown suite '$suite' (expected e2e or nfr)." ;;
   esac
 
   resolve_android_test_root
-  discover_test_files "$subdir" "$suffix"
+  discover_test_files "$subdir"
 
   if ((${#TEST_FILES[@]} == 0)); then
-    warn "Skipping frontend ${label} tests: no *${suffix}.kt files in app/src/androidTest/.../${subdir}/."
+    warn "Skipping frontend ${label} tests: no *.kt files in app/src/androidTest/.../${subdir}/."
     exit 0
   fi
 

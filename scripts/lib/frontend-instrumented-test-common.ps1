@@ -81,9 +81,9 @@ function Get-KotlinTestClass($file) {
     return "$package.$className"
 }
 
-function Discover-TestFiles($subdir, $suffix) {
+function Discover-TestFiles($subdir) {
     $script:TestFiles = @(
-        Get-ChildItem -Path $script:AndroidTestRoot -Recurse -File -Filter "*${suffix}.kt" -ErrorAction SilentlyContinue |
+        Get-ChildItem -Path $script:AndroidTestRoot -Recurse -File -Filter '*.kt' -ErrorAction SilentlyContinue |
             Where-Object { $_.FullName -match "[\\/]$([regex]::Escape($subdir))[\\/]" } |
             Sort-Object FullName |
             ForEach-Object { $_.FullName }
@@ -110,19 +110,18 @@ function Wait-ForAppSignIn {
 
 function Run-InstrumentedTests($suite) {
     $subdir = $null
-    $suffix = $null
     $label = $null
     switch ($suite) {
-        'e2e' { $subdir = 'e2e'; $suffix = 'E2ETest'; $label = 'E2E' }
-        'nfr' { $subdir = 'nfr'; $suffix = 'NFRTest'; $label = 'NFR' }
+        'e2e' { $subdir = 'e2e'; $label = 'E2E' }
+        'nfr' { $subdir = 'nfr'; $label = 'NFR' }
         default { Die "Unknown suite '$suite' (expected e2e or nfr)." }
     }
 
     Resolve-AndroidTestRoot
-    Discover-TestFiles $subdir $suffix
+    Discover-TestFiles $subdir
 
     if ($script:TestFiles.Count -eq 0) {
-        Warn "Skipping frontend ${label} tests: no *${suffix}.kt files in app\src\androidTest\...\${subdir}\."
+        Warn "Skipping frontend ${label} tests: no *.kt files in app\src\androidTest\...\${subdir}\."
         exit 0
     }
 
