@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Source - https://stackoverflow.com/a/71542188
+Posted by Theo Stefou, modified by community. See post 'Timeline' for change history
+Retrieved 2026-09-09, License - CC BY-SA 4.0
+-->
+
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="@raw/m1cert"/>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>
