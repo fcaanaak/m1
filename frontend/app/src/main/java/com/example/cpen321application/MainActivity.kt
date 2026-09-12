@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -38,40 +39,57 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+fun urlConcatenate(baseURL: String, endpoint: String) = "${baseURL.trimEnd('/')}/${endpoint}"
+
 @Composable
 fun Greeting(apiBaseUrl: String, modifier: Modifier = Modifier) {
     var statusText by remember { mutableStateOf("Checking backend at $apiBaseUrl/health...") }
+    var ipText by remember {   mutableStateOf("Checking IP at $apiBaseUrl/ip...") }
+    var timeText by remember {mutableStateOf("Checking Time")}
 
     LaunchedEffect(apiBaseUrl) {
-        statusText = fetchHealthStatus(apiBaseUrl)
+        statusText = fetchGet(urlConcatenate(apiBaseUrl,"health"))
+        ipText = fetchGet(urlConcatenate(apiBaseUrl,"ip"))
+        timeText = fetchGet(urlConcatenate(apiBaseUrl,"time"))
     }
 
-    Text(
-        text = statusText,
-        modifier = modifier
-    )
+    Column {
+        Text(
+            text = statusText,
+            modifier = modifier
+        )
+
+        Text(
+            text = ipText,
+            modifier = modifier
+        )
+
+        Text(
+            text = timeText,
+            modifier = modifier
+        )
+    }
 }
 
-private suspend fun fetchHealthStatus(apiBaseUrl: String): String = withContext(Dispatchers.IO) {
-    val healthUrl = "${apiBaseUrl.trimEnd('/')}/health"
+private suspend fun fetchGet(url: String, timeoutMillis: Int = 5_000): String = withContext(Dispatchers.IO) {
     try {
-        val connection = (URL(healthUrl).openConnection() as HttpURLConnection).apply {
+        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
-            connectTimeout = 5_000
-            readTimeout = 5_000
+            connectTimeout = timeoutMillis
+            readTimeout = timeoutMillis
         }
 
         when (val code = connection.responseCode) {
             HttpURLConnection.HTTP_OK -> {
                 val body = connection.inputStream.bufferedReader().use { it.readText() }
-                "Backend healthy ($healthUrl): $body"
+                body
             }
             else -> {
                 val errorBody = connection.errorStream?.bufferedReader()?.use { it.readText() }
-                "Backend error ($healthUrl): HTTP $code${errorBody?.let { " — $it" } ?: ""}"
+                "Backend error ($url): HTTP $code${errorBody?.let { " — $it" } ?: ""}"
             }
         }
     } catch (e: Exception) {
-        "Backend unreachable ($healthUrl): ${e.message ?: e.javaClass.simpleName}"
+        "Backend unreachable ($url): ${e.message ?: e.javaClass.simpleName}"
     }
 }
