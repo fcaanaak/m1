@@ -35,8 +35,15 @@ android {
         buildConfigField(
             "String",
             "API_BASE_URL",
-            "\"${localProperty("API_BASE_URL", "https://10.40.174.133:3000")}\""
+            "\"${localProperty("API_BASE_URL")}\""
         )
+
+        buildConfigField(
+         "String",
+            "API_WS_URL",
+            "\"${localProperty("API_WS_URL")}\""
+        )
+
         buildConfigField(
             "String",
             "GOOGLE_CLIENT_ID",
@@ -79,6 +86,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+
+    // Source: https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

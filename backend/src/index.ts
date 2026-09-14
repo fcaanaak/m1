@@ -20,7 +20,7 @@ const server = https
 
 // Websocket code
 // Might need to refactor this later
-const wsServer = new WebSocketServer({port:8080});
+const wsServer = new WebSocketServer({server:server});
 const socket = new WebSocket("wss://8.229.22.124")
 
 wsServer.on("connection", (websocket) => {
