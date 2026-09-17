@@ -32,6 +32,12 @@
             android:label="@string/title_activity_pixel_grid"
             android:theme="@style/Theme.CPEN321Application"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.CPEN321Application"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
