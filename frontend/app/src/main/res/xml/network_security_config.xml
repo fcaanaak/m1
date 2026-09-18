@@ -9,7 +9,7 @@ Retrieved 2026-09-09, License - CC BY-SA 4.0
 <network-security-config>
     <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
-            <certificates src="@raw/m1cert"/>
+            <certificates src="@raw/m1_ec2_cert"/>
             <certificates src="system"/>
         </trust-anchors>
     </base-config>
