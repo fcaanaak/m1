@@ -1,6 +1,7 @@
 package com.example.cpen321application
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.core.net.toUri
 
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -108,12 +110,24 @@ suspend fun signIn(request: GetCredentialRequest, context: Context): Exception? 
         val credential = result.credential
         if (credential is CustomCredential &&
             credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-            Log.i(TAG, "Signed in as: ${googleIdTokenCredential.id}")
+
+            //Log.i(TAG, "Signed in as: ${googleIdTokenCredential.id}")
         }
 
-        Toast.makeText(context, "Sign in successful!", Toast.LENGTH_SHORT).show()
-        Log.i(TAG, "(☞ﾟヮﾟ)☞  Sign in Successful!  ☜(ﾟヮﾟ☜)")
+        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+
+        val loggedInUserFirstName = googleIdTokenCredential.givenName
+        val loggedInUserLastName = googleIdTokenCredential.familyName
+
+        Log.d("DEBUG FIRST NAME", loggedInUserFirstName!!)
+
+        val i = Intent(Intent.ACTION_SEND, "test:login2".toUri() ,context, ClientServerActivity::class.java)
+
+        i.putExtra("firstName",loggedInUserFirstName)
+        i.putExtra("lastName",loggedInUserLastName)
+
+        context.startActivity(i)
+
         null
     } catch (e: GoogleIdTokenParsingException) {
         Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show()

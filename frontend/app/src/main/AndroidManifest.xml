@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -36,6 +37,18 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/title_activity_login"
+            android:theme="@style/Theme.CPEN321Application"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".clientServerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_client_server"
+            android:theme="@style/Theme.CPEN321Application"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ClientServerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_client_server"
             android:theme="@style/Theme.CPEN321Application"
             android:windowSoftInputMode="adjustResize" />
     </application>
