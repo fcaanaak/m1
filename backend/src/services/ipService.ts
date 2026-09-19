@@ -1,5 +1,5 @@
 import {networkInterfaces} from 'os';
-import {NetworkInterfaceInfo, NetworkInterfaceInfoIPv4, NetworkInterfaceInfoIPv6} from "node:os";
+import {NetworkInterfaceInfo} from "node:os";
 
 class IPService {
 
@@ -7,7 +7,7 @@ class IPService {
         return !entry.internal && entry.family === "IPv4";
     }
 
-    getIPAddress() {
+    getPrivateIpAddress() {
 
         const interfaces = networkInterfaces();
 
@@ -22,6 +22,16 @@ class IPService {
         }
 
         return null;
+
+    }
+
+    async getPublicIpAddress() {
+        try {
+            const res = await fetch("https://api.ipify.org");
+            return await res.text()
+        } catch (err) {
+            return `Error getting IP address: ${err}`;
+        }
 
     }
 
