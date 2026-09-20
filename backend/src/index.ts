@@ -9,8 +9,8 @@ const app = createApp();
 const server = https
     .createServer(
         {
-            key: fs.readFileSync("secrets/m1key.pem"),
-            cert: fs.readFileSync("secrets/m1cert.pem")
+            key: fs.readFileSync("secrets/m1_ec2_key.pem"),
+            cert: fs.readFileSync("secrets/m1_ec2_cert.pem")
         }
         ,app
     )
