@@ -42,7 +42,7 @@ class TimeService {
         const offsetMinutes = utcDiff % 60;
 
 
-        return `${time} GMT${this.formatNumberWithSign(offsetHours)}:${this.formatNumberWithSign(offsetMinutes)}`;
+        return `${time} GMT${this.formatNumberWithSign(offsetHours)}:${this.isSingleDigit(offsetMinutes) ? this.formatSingleDigit(offsetMinutes) : offsetMinutes}`;
     }
 
 }
