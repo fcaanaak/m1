@@ -89,7 +89,7 @@ fun Greeting(apiBaseUrl: String, googleData: Bundle, modifier: Modifier = Modifi
         )
 
         Text (
-            text = if (clientIPAddress != null) "Client Public IP Address $clientIPAddress" else "IP Address fetching error",
+            text = if (clientIPAddress != null) "Client Public IP Address: $clientIPAddress" else "IP Address fetching error",
             modifier = modifier
         )
 
