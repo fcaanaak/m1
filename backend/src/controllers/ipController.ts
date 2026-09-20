@@ -8,8 +8,8 @@ const ipService = new IPService();
 ipController.get('/', (req, res) => {
 
     ipService.getPublicIpAddress()
-        .then(respJ => res.json({serverIp: respJ}))
-        .catch(err => res.status(404).json({error: err}));
+        .then(respJ => res.json({serverIP: respJ}))
+        .catch(err => res.status(404).json({serverIP: err}));
 
 });
 
