@@ -92,6 +92,11 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
     implementation(libs.googleid)
 
+    // Source: https://mvnrepository.com/artifact/io.coil-kt.coil3/coil-compose
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

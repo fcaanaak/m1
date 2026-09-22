@@ -61,10 +61,10 @@ fun Greeting(apiBaseUrl: String, googleData: Bundle, modifier: Modifier = Modifi
 
 
     LaunchedEffect(apiBaseUrl) {
-        serverIp = JSONObject(fetchGet(urlConcatenate(apiBaseUrl, "ip"))).getString("serverIP")
-        serverTime = JSONObject(fetchGet(urlConcatenate(apiBaseUrl, "time"))).getString("time")
+        serverIp = JSONObject(Utils.fetchGet(urlConcatenate(apiBaseUrl, "ip"))).getString("serverIP")
+        serverTime = JSONObject(Utils.fetchGet(urlConcatenate(apiBaseUrl, "time"))).getString("time")
 
-        val serverNameJson: JSONObject = JSONObject(fetchGet(urlConcatenate(apiBaseUrl,"name"))).getJSONObject("name")
+        val serverNameJson: JSONObject = JSONObject(Utils.fetchGet(urlConcatenate(apiBaseUrl,"name"))).getJSONObject("name")
         serverFullName = "${serverNameJson.getString("firstName")} ${serverNameJson.getString("lastName")}"
 
         val gmtOffset = SimpleDateFormat("ZZZZ", Locale.getDefault()).format(System.currentTimeMillis())
@@ -75,7 +75,7 @@ fun Greeting(apiBaseUrl: String, googleData: Bundle, modifier: Modifier = Modifi
         clientLastName = googleData.getString("lastName") ?: "No last name"
 
         withContext(Dispatchers.IO) {
-            clientIPAddress = fetchGet("https://api.ipify.org/") // APi to get public IP
+            clientIPAddress = Utils.fetchGet("https://api.ipify.org/") // APi to get public IP
         }
 
 
@@ -115,29 +115,3 @@ fun Greeting(apiBaseUrl: String, googleData: Bundle, modifier: Modifier = Modifi
 
     }
 }
-
-private suspend fun fetchGet(url: String, timeoutMillis: Int = 5_000): String =
-    withContext(Dispatchers.IO) {
-        try {
-            val connection = (URL(url).openConnection() as HttpURLConnection).apply {
-                requestMethod = "GET"
-                connectTimeout = timeoutMillis
-                readTimeout = timeoutMillis
-            }
-
-            when (val code = connection.responseCode) {
-                HttpURLConnection.HTTP_OK -> {
-                    val body = connection.inputStream.bufferedReader().use { it.readText() }
-                    body
-                }
-
-                else -> {
-                    val errorBody =
-                        connection.errorStream?.bufferedReader()?.use { it.readText() }
-                    "Backend error ($url): HTTP $code${errorBody?.let { " — $it" } ?: ""}"
-                }
-            }
-        } catch (e: Exception) {
-            "Backend unreachable ($url): ${e.message ?: e.javaClass.simpleName}"
-        }
-    }

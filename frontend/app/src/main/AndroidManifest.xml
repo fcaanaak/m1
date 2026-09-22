@@ -40,15 +40,21 @@
             android:theme="@style/Theme.CPEN321Application"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".clientServerActivity"
+            android:name=".ClientServerActivity"
             android:exported="false"
             android:label="@string/title_activity_client_server"
             android:theme="@style/Theme.CPEN321Application"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ClientServerActivity"
-            android:exported="false"
-            android:label="@string/title_activity_client_server"
+            android:name=".SurpriseActivity"
+            android:exported="true"
+            android:label="@string/title_activity_surprise"
+            android:theme="@style/Theme.CPEN321Application"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".TimerActivity"
+            android:exported="true"
+            android:label="@string/title_activity_timer"
             android:theme="@style/Theme.CPEN321Application"
             android:windowSoftInputMode="adjustResize" />
     </application>
