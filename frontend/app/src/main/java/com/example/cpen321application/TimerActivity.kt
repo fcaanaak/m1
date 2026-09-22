@@ -3,6 +3,8 @@ package com.example.cpen321application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,6 +20,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,6 +61,7 @@ fun Sample(modifier: Modifier, context: Context){
     var seconds by remember { mutableStateOf("00") }
     var inputEnabled by remember {mutableStateOf(true)}
     var timerStatusText by remember { mutableStateOf("Start Timer") }
+    var secondsLeft by remember { mutableLongStateOf(0) }
 
     val t = Timer()
 
@@ -76,16 +81,33 @@ fun Sample(modifier: Modifier, context: Context){
         Button(
             onClick = {
                 if (minutes.isNotEmpty() && seconds.isNotEmpty()) {
+
+                    secondsLeft = minutes.toLong()*60 +seconds.toLong()
+
                     t.schedule(object: TimerTask() {
-                        override fun run() {
-                            inputEnabled = true
-                            context.startActivity(
-                                Intent(context, SurpriseActivity::class.java)
-                            )
+                        override fun run () {
+
+                            timerStatusText = "Seconds left: $secondsLeft"
+
+                            if (secondsLeft <= 0L) {
+
+                                inputEnabled = true
+                                timerStatusText = "Start Timer"
+
+                                t.cancel()
+                                context.startActivity(
+                                    Intent(context, SurpriseActivity::class.java)
+                                )
+                            }
+
+                            secondsLeft -= 1
                         }
-                    }, secondsToMillis(minutes.toLong()*60) + secondsToMillis(seconds.toLong()))
+                    }, 0, 1000)
+
                     inputEnabled = false
-                    timerStatusText = "Timer Running"
+
+                } else {
+                    Toast.makeText(context, "No empty fields allowed", Toast.LENGTH_SHORT).show()
                 }
             },
             enabled = inputEnabled
