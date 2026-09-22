@@ -78,6 +78,7 @@ fun Sample(modifier: Modifier, context: Context){
                 if (minutes.isNotEmpty() && seconds.isNotEmpty()) {
                     t.schedule(object: TimerTask() {
                         override fun run() {
+                            inputEnabled = true
                             context.startActivity(
                                 Intent(context, SurpriseActivity::class.java)
                             )
