@@ -10,7 +10,7 @@ class TimeService {
             formattedNumber = this.formatSingleDigit(posNum);
         }
 
-        if (num > 0) {
+        if (num >= 0) {
             return `+${formattedNumber}`;
         } else if (num < 0) {
             return `-${formattedNumber}`;
@@ -42,7 +42,7 @@ class TimeService {
         const offsetMinutes = utcDiff % 60;
 
 
-        return `${time} GMT${this.formatNumberWithSign(offsetHours)}:${this.formatNumberWithSign(offsetMinutes)}`;
+        return `${time} GMT${this.formatNumberWithSign(offsetHours)}:${this.isSingleDigit(offsetMinutes) ? this.formatSingleDigit(offsetMinutes) : offsetMinutes}`;
     }
 
 }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CPEN321 Application</string>
+    <string name="title_activity_pixel_grid">PixelGridActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_client_server">clientServerActivity</string>
+    <string name="title_activity_surprise">SurpriseActivity</string>
+    <string name="title_activity_timer">TimerActivity</string>
 </resources>

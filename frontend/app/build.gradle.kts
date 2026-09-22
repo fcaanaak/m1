@@ -35,8 +35,15 @@ android {
         buildConfigField(
             "String",
             "API_BASE_URL",
-            "\"${localProperty("API_BASE_URL", "http://10.0.2.2:3000")}\""
+            "\"${localProperty("API_BASE_URL")}\""
         )
+
+        buildConfigField(
+         "String",
+            "API_WS_URL",
+            "\"${localProperty("API_WS_URL")}\""
+        )
+
         buildConfigField(
             "String",
             "GOOGLE_CLIENT_ID",
@@ -79,6 +86,17 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+
+    // Source: https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation(libs.googleid)
+
+    // Source: https://mvnrepository.com/artifact/io.coil-kt.coil3/coil-compose
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
