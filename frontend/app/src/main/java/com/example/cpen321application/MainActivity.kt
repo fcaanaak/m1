@@ -58,6 +58,11 @@ class MainActivity : ComponentActivity() {
                                 "Login + Server",
                                 "login".toUri()
                             )
+                            NavButton(LocalContext.current,
+                                TimerActivity::class.java,
+                                "Timer + Surprise",
+                                "surprise".toUri()
+                                )
                         }
                     }
                 }
